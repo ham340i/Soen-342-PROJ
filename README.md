@@ -8,11 +8,12 @@ This repository contains the project setup and deliverables for **SOEN 342 – S
 ## Team Information
 
 **Team Lead**  
-- Ahmad Habbal  
-
-**Team Members**  
+- Mena Boulus
+  
+**Team Members** 
+- Ahmad Habbal 
 - Abd Al Rahman Kabani  
-- Mena Boulus  
+
 
 ---
 
