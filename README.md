@@ -1,5 +1,4 @@
 # SOEN 342 – Software Requirements and Deployment  
-## Project – Iteration 0 (Winter 2026)
 
 This repository contains the project setup and deliverables for **SOEN 342 – Software Requirements and Deployment**.
 
