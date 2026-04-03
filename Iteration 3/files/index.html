@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Task Management System (PTMS)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <h2 class="brand-title">PTMS</h2>
+        <div class="brand-subtitle">Data persisted via localStorage</div>
+      </div>
+
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-btn active" type="button" data-page="search-page">🔍 Search Tasks</button>
+        <button class="nav-btn" type="button" data-page="import-page">📥 Import CSV</button>
+        <button class="nav-btn" type="button" data-page="export-page">📤 Export CSV</button>
+        <button class="nav-btn" type="button" data-page="ical-page">📅 iCal Export</button>
+        <button class="nav-btn" type="button" data-page="overloaded-page">⚠️ Overloaded</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <h1 class="header-title">Personal Task Management System (PTMS)</h1>
+        <div class="header-metrics">
+          <span class="pill">Total Tasks: <strong id="header-total">0</strong></span>
+          <span class="pill">Open Tasks: <strong id="header-open">0</strong></span>
+        </div>
+      </header>
+
+      <section class="content">
+        <div id="search-page" class="page active">
+          <div class="card">
+            <h3 class="card-title">Create Task / Recurring Tasks</h3>
+            <div class="card-body">
+              <div class="create-grid">
+                <div class="field" style="grid-column: span 2;">
+                  <label for="create-title">Task Name *</label>
+                  <input id="create-title" type="text" placeholder="Ex: Weekly Team Sync" />
+                </div>
+                <div class="field" style="grid-column: span 2;">
+                  <label for="create-description">Description</label>
+                  <input id="create-description" type="text" placeholder="Optional description" />
+                </div>
+                <div class="field">
+                  <label for="create-status">Status</label>
+                  <select id="create-status">
+                    <option value="OPEN">OPEN</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="create-priority">Priority</label>
+                  <select id="create-priority">
+                    <option value="HIGH">HIGH</option>
+                    <option value="MEDIUM" selected>MEDIUM</option>
+                    <option value="LOW">LOW</option>
+                  </select>
+                </div>
+
+                <div class="field" style="grid-column: span 2;">
+                  <label for="create-project-name">Project Name</label>
+                  <input id="create-project-name" type="text" placeholder="Auto-creates project if missing" />
+                </div>
+                <div class="field" style="grid-column: span 2;">
+                  <label for="create-project-description">Project Description</label>
+                  <input id="create-project-description" type="text" placeholder="Optional" />
+                </div>
+                <div class="field">
+                  <label for="create-due-date">Single Due Date</label>
+                  <input id="create-due-date" type="date" />
+                </div>
+                <div class="field">
+                  <label for="create-collaborators">Collaborators</label>
+                  <input id="create-collaborators" type="text" placeholder="Alice:JUNIOR; Bob:SENIOR" />
+                </div>
+
+                <div class="field">
+                  <label for="create-recurrence-type">Recurrence Type</label>
+                  <select id="create-recurrence-type">
+                    <option value="NONE" selected>NONE</option>
+                    <option value="DAILY">DAILY</option>
+                    <option value="WEEKLY">WEEKLY</option>
+                    <option value="MONTHLY">MONTHLY</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="create-recurrence-interval">Interval</label>
+                  <input id="create-recurrence-interval" type="number" min="1" value="1" />
+                </div>
+                <div class="field">
+                  <label for="create-recurrence-start">Recurrence Start</label>
+                  <input id="create-recurrence-start" type="date" />
+                </div>
+                <div class="field">
+                  <label for="create-recurrence-end">Recurrence End</label>
+                  <input id="create-recurrence-end" type="date" />
+                </div>
+                <div class="field">
+                  <label for="create-monthly-day">Monthly Day (1-31)</label>
+                  <input id="create-monthly-day" type="number" min="1" max="31" placeholder="Ex: 15" />
+                </div>
+                <div class="field">
+                  <label for="create-tags">Tags</label>
+                  <input id="create-tags" type="text" placeholder="tag1;tag2;tag3" />
+                </div>
+
+                <div class="field" style="grid-column: span 6;">
+                  <label>Weekly Days (for WEEKLY recurrence)</label>
+                  <div class="weekday-row">
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="1" />Mon</label>
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="2" />Tue</label>
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="3" />Wed</label>
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="4" />Thu</label>
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="5" />Fri</label>
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="6" />Sat</label>
+                    <label class="weekday-chip"><input type="checkbox" class="create-weekday" value="0" />Sun</label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="limit-senior">Senior Open-Task Limit</label>
+                  <input id="limit-senior" type="number" min="1" value="2" />
+                </div>
+                <div class="field">
+                  <label for="limit-intermediate">Intermediate Open-Task Limit</label>
+                  <input id="limit-intermediate" type="number" min="1" value="5" />
+                </div>
+                <div class="field">
+                  <label for="limit-junior">Junior Open-Task Limit</label>
+                  <input id="limit-junior" type="number" min="1" value="10" />
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button id="create-task-btn" class="btn success" type="button">Create Task(s)</button>
+                <button id="apply-limits-btn" class="btn" type="button">Apply Collaborator Limits</button>
+                <span class="muted">If recurrence is enabled, occurrences are generated between start/end dates.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Task Search & View</h3>
+            <div class="card-body">
+              <div class="filters">
+                <div class="field" style="grid-column: span 2;">
+                  <label for="search-keyword">Keyword</label>
+                  <input id="search-keyword" type="text" placeholder="Search title or description" />
+                </div>
+                <div class="field">
+                  <label for="search-status">Status</label>
+                  <select id="search-status">
+                    <option value="">Any</option>
+                    <option value="OPEN">OPEN</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="search-priority">Priority</label>
+                  <select id="search-priority">
+                    <option value="">Any</option>
+                    <option value="HIGH">HIGH</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="LOW">LOW</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="search-project">Project</label>
+                  <select id="search-project">
+                    <option value="">Any</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="search-day-of-week">Day of Week</label>
+                  <select id="search-day-of-week">
+                    <option value="">Any</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                    <option value="0">Sunday</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="search-due-from">Due From</label>
+                  <input id="search-due-from" type="date" />
+                </div>
+                <div class="field">
+                  <label for="search-due-to">Due To</label>
+                  <input id="search-due-to" type="date" />
+                </div>
+                <div class="field">
+                  <label for="search-sort">Sort By</label>
+                  <select id="search-sort">
+                    <option value="due_asc">Due Date Ascending</option>
+                    <option value="priority_desc">Priority Descending</option>
+                    <option value="title_asc">Title A-Z</option>
+                    <option value="created_desc">Created Date Descending</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button id="apply-filters-btn" class="btn primary" type="button">Apply Filters</button>
+                <button id="clear-filters-btn" class="btn" type="button">Reset to Default View</button>
+                <button id="export-filtered-btn" class="btn" type="button">Export Search Results</button>
+                <span id="result-count" class="muted"></span>
+              </div>
+            </div>
+
+            <div id="results-wrap" class="card-body"></div>
+          </div>
+        </div>
+
+        <div id="import-page" class="page">
+          <div class="card">
+            <h3 class="card-title">Import From CSV</h3>
+            <div class="card-body">
+              <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Select or drop CSV file">
+                <div><strong>Click or Drag CSV file here</strong></div>
+                <div class="hint">Accepted: <span class="mono">.csv</span> only</div>
+              </div>
+              <input id="csv-file-input" type="file" accept=".csv,text/csv" style="display:none" />
+              <div id="selected-file" class="preview-note mono">No file selected.</div>
+
+              <div class="btn-row">
+                <button id="parse-preview-btn" class="btn primary" type="button">Parse & Preview</button>
+                <button id="confirm-import-btn" class="btn success" type="button" disabled>Confirm Import</button>
+              </div>
+
+              <div id="preview-wrap" style="margin-top:14px;"></div>
+
+              <h4 style="margin:16px 0 8px; font-family: var(--heading-font); letter-spacing:0.03em;">Import Log Console</h4>
+              <div id="import-log" class="log-console" aria-live="polite"></div>
+              <div id="import-summary" class="preview-note"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="export-page" class="page">
+          <div class="card">
+            <h3 class="card-title">Export To CSV</h3>
+            <div class="card-body">
+              <div class="stats-grid" id="stats-grid"></div>
+              <div class="btn-row" style="margin-top:16px;">
+                <button id="export-btn" class="btn success" type="button" disabled>Export All Tasks to CSV</button>
+                <span id="export-note" class="muted"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="ical-page" class="page">
+          <div class="card">
+            <h3 class="card-title">iCal (.ics) Export</h3>
+            <div class="card-body">
+              <p style="color:var(--muted);margin:0 0 14px;">Export tasks to iCalendar (.ics) format for Google Calendar, Apple Calendar, or Outlook. Only tasks with a due date are eligible.</p>
+
+              <div class="filters" style="grid-template-columns: repeat(4, minmax(150px, 1fr));">
+                <div class="field">
+                  <label for="ical-mode">Export Mode</label>
+                  <select id="ical-mode">
+                    <option value="single">Single Task</option>
+                    <option value="project">All Tasks in a Project</option>
+                    <option value="filtered">Current Filtered Tasks</option>
+                  </select>
+                </div>
+                <div class="field" id="ical-task-field">
+                  <label for="ical-task-select">Select Task</label>
+                  <select id="ical-task-select"></select>
+                </div>
+                <div class="field" id="ical-project-field" style="display:none;">
+                  <label for="ical-project-select">Select Project</label>
+                  <select id="ical-project-select"></select>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button id="ical-export-btn" class="btn success" type="button">Export .ics</button>
+                <span id="ical-export-note" class="muted"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="overloaded-page" class="page">
+          <div class="card">
+            <h3 class="card-title">Overloaded Collaborators</h3>
+            <div class="card-body">
+              <p style="color:var(--muted);margin:0 0 14px;">Lists collaborators whose open task assignments exceed their category limit.</p>
+              <div id="overloaded-list"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <div id="task-modal" class="modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+      <div class="modal-head">
+        <h3 id="task-modal-title">Task Details</h3>
+        <button id="close-modal-btn" class="close-btn" type="button" aria-label="Close">×</button>
+      </div>
+      <div id="task-modal-content"></div>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
