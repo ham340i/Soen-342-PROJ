@@ -1,0 +1,105 @@
+# System Operations & Operation Contracts
+
+## 1. createTask(title, description, priority, dueDate)
+
+**Preconditions:**
+- title is not empty
+
+**Postconditions:**
+- A new Task is created
+- Task is added to the system
+- Task status is set to "OPEN"
+
+
+---
+
+## 2. updateTask(taskId, updatedFields)
+
+**Preconditions:**
+- Task with taskId exists
+
+**Postconditions:**
+- Task attributes are updated according to updatedFields
+
+
+---
+
+## 3. completeTask(taskId)
+
+**Preconditions:**
+- Task with taskId exists
+- Task status is not already "COMPLETED"
+
+**Postconditions:**
+- Task status is set to "COMPLETED"
+
+
+---
+
+## 4. cancelTask(taskId)
+
+**Preconditions:**
+- Task with taskId exists
+- Task status is not already "CANCELLED"
+
+**Postconditions:**
+- Task status is set to "CANCELLED"
+
+
+---
+
+## 5. addSubtask(taskId, subtaskTitle)
+
+**Preconditions:**
+- Task with taskId exists
+- subtaskTitle is not empty
+
+**Postconditions:**
+- A new Subtask is created
+- Subtask is added to the specified Task
+
+
+---
+
+## 6. assignProject(taskId, projectId)
+
+**Preconditions:**
+- Task with taskId exists
+- Project with projectId exists
+
+**Postconditions:**
+- Task is associated with the specified Project
+
+
+---
+
+## 7. addTag(taskId, tagName)
+
+**Preconditions:**
+- Task with taskId exists
+- tagName is not empty
+
+**Postconditions:**
+- Tag is added to the Task
+
+
+---
+
+## 8. searchTasks(filters)
+
+**Preconditions:**
+- filters are valid
+
+**Postconditions:**
+- A list of Tasks matching the filters is returned
+
+
+---
+
+## 9. exportTasks(format)
+
+**Preconditions:**
+- format is supported (e.g., CSV or iCal)
+
+**Postconditions:**
+- Tasks are exported in the selected format
